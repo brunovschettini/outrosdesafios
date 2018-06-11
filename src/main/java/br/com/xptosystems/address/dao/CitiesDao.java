@@ -84,5 +84,15 @@ public class CitiesDao extends DB {
             return new ArrayList();
         }
     }
+    
+    public List<Cities> find_by_uf(String uf) {
+        try {
+            Query query = getEntityManager().createQuery("SELECT C FROM Cities C WHERE C.id = :uf ORDER BY C.name ASC");
+            query.setParameter("uf", uf);
+            return query.getResultList();
+        } catch (Exception e) {
+            return new ArrayList();
+        }
+    }
 
 }

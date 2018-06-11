@@ -54,8 +54,8 @@ public class CitiesWS {
         JSONArray array = new JSONArray();
         for (Object[] row : rows) {
             JSONObject jSONObject = new JSONObject();
-            jSONObject.append("uf", row[0]);
-            jSONObject.append("amount", row[1]);
+            jSONObject.put("uf", row[0]);
+            jSONObject.put("amount", row[1]);
             array.put(jSONObject);
         }
         return Response.status(200).entity(array.toString()).build();
@@ -67,13 +67,13 @@ public class CitiesWS {
     public synchronized Response count_cities_by_state(@PathParam("uf") String uf) {
         Integer count = new CitiesDao().count_cities_by_state(uf);
         JSONObject jSONObject = new JSONObject();
-        jSONObject.append("uf", uf);
-        jSONObject.append("amount", count);
+        jSONObject.put("uf", uf);
+        jSONObject.put("amount", count);
         return Response.status(200).entity(jSONObject.toString()).build();
     }
 
     @GET
-    @Path("/find_by_ibge_id")
+    @Path("/find/ibge_id/{ibge_id}")
     @Produces({MediaType.APPLICATION_JSON})
     public synchronized Response find_by_ibge_id(@PathParam("ibge_id") String ibge_id) {
         Cities cities = new CitiesDao().find_by_ibge_id(ibge_id);
@@ -81,11 +81,27 @@ public class CitiesWS {
     }
 
     @GET
-    @Path("/find_by_uf")
+    @Path("/find/uf/{uf}")
     @Produces({MediaType.APPLICATION_JSON})
     public synchronized Response find_by_uf(@PathParam("uf") String uf) {
-        Cities cities = new CitiesDao().find_by_ibge_id(uf);
-        return Response.status(200).entity(new Gson().toJson(cities)).build();
+        List<Cities> list = new CitiesDao().find_by_uf(uf);
+        return Response.status(200).entity(new Gson().toJson(list)).build();
+    }
+    
+    @GET
+    @Path("/total/{uf}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public synchronized Response find_by_uf(@PathParam("uf") String uf) {
+        List<Cities> list = new CitiesDao().find_by_uf(uf);
+        return Response.status(200).entity(new Gson().toJson(list)).build();
+    }
+    
+    @GET
+    @Path("/total/{uf}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public synchronized Response find_by_uf(@PathParam("uf") String uf) {
+        List<Cities> list = new CitiesDao().find_by_uf(uf);
+        return Response.status(200).entity(new Gson().toJson(list)).build();
     }
 
 }
