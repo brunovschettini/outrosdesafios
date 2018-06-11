@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.com</groupId>
-    <artifactId>xptosystems</artifactId>
+    <artifactId>xptosystems2</artifactId>
     <version>1.0</version>
 
-    <name>XptoSystems</name>
+    <name>XptoSystems2</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
