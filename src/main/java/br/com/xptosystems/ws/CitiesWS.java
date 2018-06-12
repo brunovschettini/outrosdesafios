@@ -29,7 +29,7 @@ public class CitiesWS {
     @POST
     @Path("/import")
     @Produces({MediaType.APPLICATION_JSON})
-    public synchronized Response auth(@FormParam("list_cities") String list_cities) {
+    public synchronized Response importCities(@FormParam("list_cities") String list_cities) {
         NotifyResponse notifyResponse = new NotifyResponse();
         Gson gson = new Gson();
         List<Cities> listCities = new ArrayList();
@@ -187,103 +187,6 @@ public class CitiesWS {
         }
         notifyResponse.setObject("Success");
         return Response.status(200).entity(gson.toJson(notifyResponse)).build();
-    }
-
-    @POST
-    @Path("insert2")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public synchronized Response insert2(
-            Cities cities
-    ) {
-        store(cities);
-        return Response.status(200).entity("ok").build();
-    }
-
-    /**
-     * 7 Permitir adicionar uma nova Cidade
-     *
-     * @param city
-     * @return
-     */
-    @PUT
-    @Path("update")
-    public synchronized void update(
-            //            @FormParam("ibge_id") String ibge_id,
-            //            @FormParam("uf") String uf,
-            //            @FormParam("name") String name,
-            //            @FormParam("capital") String capital,
-            //            @FormParam("lon") String lon,
-            //            @FormParam("lat") String lat,
-            //            @FormParam("no_accents") String no_accents,
-            //            @FormParam("alternative_names") String alternative_names,
-            //            @FormParam("micro_region") String micro_region,
-            //            @FormParam("meso_region") String meso_region
-            Cities city
-    ) {
-        store(city);
-    }
-
-    public synchronized String store(Cities city) {
-        NotifyResponse notifyResponse = new NotifyResponse();
-        Gson gson = new Gson();
-
-        if (city.getIbge_id() == null || city.getIbge_id() == null) {
-            notifyResponse.setObject("Informar o Id do Ibge!");
-            return gson.toJson(notifyResponse);
-        }
-        if (city.getName() == null || city.getName().isEmpty()) {
-            notifyResponse.setObject("Informar o nome da ciade!");
-            return gson.toJson(notifyResponse);
-        }
-        if (city.getUf() == null || city.getUf().isEmpty()) {
-            notifyResponse.setObject("Informar a UF / Estado da ciade!");
-            return gson.toJson(notifyResponse);
-        }
-        if (city.getLat() == null) {
-            notifyResponse.setObject("Informar as cordenadas de latitude!");
-            return gson.toJson(notifyResponse);
-        }
-        if (city.getLon() == null) {
-            notifyResponse.setObject("Informar as cordenadas de longitude!");
-            return gson.toJson(notifyResponse);
-        }
-        if (city.getCapital() == null) {
-            notifyResponse.setObject("Informar se a cidade é uma capital!");
-            return gson.toJson(notifyResponse);
-        }
-
-//        if (ibge_id == null || ibge_id.isEmpty()) {
-//            notifyResponse.setObject("Informar o Id do Ibge!");
-//            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
-//        }cities
-//        if (name == null || name.isEmpty()) {
-//            notifyResponse.setObject("Informar o nome da ciade!");
-//            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
-//        }
-//        if (uf == null || uf.isEmpty()) {
-//            notifyResponse.setObject("Informar a UF / Estado da ciade!");
-//            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
-//        }
-//        if (lat == null || lat.isEmpty()) {
-//            notifyResponse.setObject("Informar as cordenadas de latitude!");
-//            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
-//        }
-//        if (lon == null || lon.isEmpty()) {
-//            notifyResponse.setObject("Informar as cordenadas de longitude!");
-//            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
-//        }
-//        if (capital == null || capital.isEmpty()) {
-//            notifyResponse.setObject("Informar se a cidade é uma capital!");
-//            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
-//        }
-//        Cities city = new Cities(Long.parseLong(ibge_id), uf, name, Boolean.parseBoolean(capital), Double.parseDouble(lon), Double.parseDouble(lat), no_accents, alternative_names, micro_region, meso_region);
-        String result = "";
-        if (result == null) {
-            notifyResponse.setObject("Success");
-            return gson.toJson(notifyResponse);
-        }
-        notifyResponse.setObject(result);
-        return gson.toJson(notifyResponse);
     }
 
     /**

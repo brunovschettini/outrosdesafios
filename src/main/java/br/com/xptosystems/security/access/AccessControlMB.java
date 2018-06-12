@@ -3,7 +3,7 @@ package br.com.xptosystems.security.access;
 import br.com.xptosystems.dao.Dao;
 import br.com.xptosystems.security.UserToken;
 import br.com.xptosystems.security.Users;
-import br.com.xptosystems.security.ws.UsersWS;
+import br.com.xptosystems.security.ws.UsersRequest;
 //import br.com.xptosystems.security.ws.UsersWS;
 //import br.com.xptosystems.ws.UsersWS;
 import br.com.xptosystems.securitys.dao.UsersDao;
@@ -57,7 +57,7 @@ public class AccessControlMB implements Serializable {
             return null;
         }
         String pass = password;
-        UsersWS usersWS = new UsersWS();
+        UsersRequest usersWS = new UsersRequest();
         UserToken ut = new UserToken();
         MessageDigest m = MessageDigest.getInstance("MD5");
         m.update(pass.getBytes(), 0, pass.length());

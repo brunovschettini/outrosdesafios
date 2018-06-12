@@ -2,8 +2,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:composition template="template/templateAdmin.xhtml">
+    <ui:composition template="layout/private.xhtml">
         <ui:define name="meta_head">
+            <h:outputStylesheet library="css" name="dataTables.bootstrap4.min.css" />
+            <h:outputScript library="js" name="jquery.dataTables.min.js" />
+            <h:outputScript library="js" name="dataTables.bootstrap4.min.js" />               
         </ui:define>
         <ui:define name="title">
             Cidades
@@ -21,35 +24,88 @@
                                     <div class="form-group">
                                         <h:panelGroup  id="i_filters">
                                             <div class="row">
+                                                <div class="col-lg-12">
+                                                    <label>Consultas</label>
+                                                    <h:selectOneMenu value="#{citiesMB.filter}" styleClass="form-control">
+                                                        <f:ajax event="change" render="@this i_filters i_result_list" execute="@form" onevent="statusbar"/>
+                                                        <f:selectItem itemLabel="Retornar somente as cidades que são capitais ordenadas por nome" itemValue="capitals"  />
+                                                        <f:selectItem itemLabel="Retornar o nome do estado com a maior e menor quantidade de cidades e a quantidade de cidades" itemValue="min_max_cities_by_state"  />
+                                                        <f:selectItem itemLabel="Retornar a quantidade de cidades por estado" itemValue="count_by_state"  />
+                                                        <f:selectItem itemLabel="Obter os dados da cidade informando o id do IBGE" itemValue="find_by_ibge_id"  />
+                                                        <f:selectItem itemLabel="Retornar o nome das cidades baseado em um estado selecionado" itemValue="find_by_uf"  />
+                                                        <f:selectItem itemLabel="Permitir selecionar uma coluna (do CSV) e através dela entrar com uma string para filtrar. retornar assim todos os objetos que contenham tal string" itemValue="find_column_query"  />
+                                                        <f:selectItem itemLabel="Total por Coluna" itemValue="total_columns"  />
+                                                        <f:selectItem itemLabel="Total de Cidades" itemValue="total"  />
+                                                    </h:selectOneMenu>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-lg-3">
-                                                    <h:selectOneMenu value="#{productsMB.by}" styleClass="form-control">
-                                                        <f:ajax event="change" render="@this i_filters" execute="@this" listener="#{productsMB.setQ('')}"/>
+                                                    <h:selectOneMenu value="#{citiesMB.by}" styleClass="form-control">
                                                         <f:selectItem itemLabel="Filtro" itemValue=""  />
                                                         <f:selectItem itemLabel="Nome" itemValue="name"  />
-                                                        <f:selectItem itemLabel="Modelo" itemValue="model"  />
-                                                        <f:selectItem itemLabel="Marca" itemValue="brand"  />
-                                                        <f:selectItem itemLabel="Código de barras" itemValue="barcode"  />
+                                                        <f:selectItem itemLabel="IBGE ID" itemValue="ibge_id"  />
+                                                        <f:selectItem itemLabel="UF" itemValue="uf"  />
+                                                        <f:selectItem itemLabel="Meso Região" itemValue="meso-region"  />
+                                                        <f:selectItem itemLabel="Macro Região" itemValue="macro-region"  />
+                                                        <f:selectItem itemLabel="Latitude" itemValue="lat"  />
+                                                        <f:selectItem itemLabel="Longitude" itemValue="lon"  />
                                                         <f:selectItem itemLabel="Código" itemValue="code"  />
+                                                        <f:selectItem itemLabel="Nome Alternativo" itemValue="alternative_accents"  />
+                                                        <f:selectItem itemLabel="Nome Alternativo - Sem acentos" itemValue="no_accents"  />
                                                     </h:selectOneMenu>
                                                 </div>
-                                                <div class="col-lg-7">
-                                                    <h:inputText value="#{productsMB.q}" 
-                                                                 disabled="#{empty productsMB.by}" 
+                                                <div class="col-lg-3">
+                                                    <h:selectOneMenu value="#{citiesMB.uf}" styleClass="form-control" rendered="#{citiesMB.filter eq 'find_by_uf' or citiesMB.filter eq 'count_by_state' or (citiesMB.by eq 'uf' and citiesMB.filter eq 'find_column_query') or (citiesMB.by eq 'uf' and citiesMB.filter eq 'total_columns')}">
+                                                        <f:selectItem itemValue="AC" itemLabel="AC"/>
+                                                        <f:selectItem itemValue="AL" itemLabel="AL"/>
+                                                        <f:selectItem itemValue="AP" itemLabel="AP"/>
+                                                        <f:selectItem itemValue="AM" itemLabel="AM"/>
+                                                        <f:selectItem itemValue="BA" itemLabel="BA"/>
+                                                        <f:selectItem itemValue="CE" itemLabel="CE"/>
+                                                        <f:selectItem itemValue="DF" itemLabel="DF"/>
+                                                        <f:selectItem itemValue="ES" itemLabel="ES"/>
+                                                        <f:selectItem itemValue="GO" itemLabel="GO"/>
+                                                        <f:selectItem itemValue="MA" itemLabel="MA"/>
+                                                        <f:selectItem itemValue="MT" itemLabel="MT"/>
+                                                        <f:selectItem itemValue="MS" itemLabel="MS"/>
+                                                        <f:selectItem itemValue="MG" itemLabel="MG"/>
+                                                        <f:selectItem itemValue="PA" itemLabel="PA"/>
+                                                        <f:selectItem itemValue="PB" itemLabel="PB"/>
+                                                        <f:selectItem itemValue="PR" itemLabel="PR"/>
+                                                        <f:selectItem itemValue="PE" itemLabel="PE"/>
+                                                        <f:selectItem itemValue="PI" itemLabel="PI"/>
+                                                        <f:selectItem itemValue="RJ" itemLabel="RJ"/>
+                                                        <f:selectItem itemValue="RN" itemLabel="RN"/>
+                                                        <f:selectItem itemValue="RS" itemLabel="RS"/>
+                                                        <f:selectItem itemValue="RO" itemLabel="RO"/>
+                                                        <f:selectItem itemValue="RR" itemLabel="RR"/>
+                                                        <f:selectItem itemValue="SC" itemLabel="SC"/>
+                                                        <f:selectItem itemValue="SP" itemLabel="SP"/>
+                                                        <f:selectItem itemValue="SE" itemLabel="SE"/>
+                                                        <f:selectItem itemValue="TO" itemLabel="TO"/>
+                                                    </h:selectOneMenu>                                                    
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <h:inputText value="#{citiesMB.query}" 
                                                                  styleClass="form-control focus_item" 
                                                                  autocomplete="false"
                                                                  onkeyup="
                                                                          if (event.keyCode === 13) {
-                                                                             document.getElementById('form_cities:btnfindproducts').click();
+                                                                             document.getElementById('form_cities:btnfindcities').click();
                                                                          }
-                                                                 ">
+                                                                 "
+                                                                 rendered="#{citiesMB.filter eq 'find_by_ibge_id' or citiesMB.filter eq 'find_column_query'}"
+                                                                 >
                                                         <f:passThroughAttribute name="placeholder" value="Descrição da pesquisa" />
                                                         <f:passThroughAttribute name="onpaste" value="return false" />
                                                         <f:passThroughAttribute name="ondrop" value="return false" />
                                                     </h:inputText>
                                                 </div>
                                                 <div class="col-lg-2">
-                                                    <h:commandLink value="PESQUISAR" style="width: 150px" styleClass="btn btn-default form-control" id="btnfindproducts">
-                                                        <f:ajax event="click" render="@this i_result_list" execute="@form" listener="#{productsMB.loadListProducts()}" onevent="statusbar"/>
+                                                    <h:commandLink value="PESQUISAR" style="width: 150px" styleClass="btn btn-default form-control" id="btnfindcities">
+                                                        <f:ajax event="click" render="@this i_result_list" execute="@form" listener="#{citiesMB.load}" onevent="statusbar"/>
                                                     </h:commandLink>
                                                 </div>
                                             </div>
@@ -59,7 +115,7 @@
                             </div> 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <h:commandLink value="CADASTRAR" action="#{callPageMB.page('product')}" styleClass="btn btn-primary btn-lg" />
+                                    <h:commandLink value="CADASTRAR" action="#{callPageMB.page('city')}" styleClass="btn btn-primary btn-lg" />
                                 </div>
                             </div>
                         </h:panelGroup>
@@ -71,50 +127,77 @@
                         <div class="panel panel-default">
                             <h:panelGroup layout="block" id="i_result_list">
                                 <div class="table-responsive table-scroll-max">
-                                    <h:dataTable var="product" value="#{productsMB.listProducts}" styleClass="table table-striped table-hover table-scroll-max">
+                                    <h:dataTable var="cities" value="#{citiesMB.listCities}" styleClass="table table-striped table-hover table-scroll-max table_res">
                                         <h:column>
-                                            <h:outputLink value="product.xhtml?id=#{product.id}" styleClass="btn btn-default" style="width: 60px">
-                                                ##{product.id}
+                                            <f:facet name="header">
+                                                IBGE ID 
+                                            </f:facet>
+                                            <h:outputLink value="city.xhtml?id=#{cities.id}" styleClass="btn btn-default" style="width: 60px">
+                                                ##{cities.ibge_id}
                                             </h:outputLink>
                                         </h:column>                                        
                                         <h:column>
                                             <f:facet name="header">
+                                                UF     
+                                            </f:facet>
+                                            #{cities.uf}
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
                                                 Nome        
                                             </f:facet>
-                                            #{product.name}
+                                            #{cities.name}
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
-                                                Modelo     
+
                                             </f:facet>
-                                            #{product.model}
+                                            #{cities.capital ? 'CAPITAL' : ''}
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
-                                                Marca
+                                                Sem acentuação
                                             </f:facet>
-                                            #{product.brand}
+                                            #{cities.no_accents}
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
-                                                Categoria
+                                                Nome popular
                                             </f:facet>
-                                            #{product.categorie.name}
+                                            #{cities.alternative_names}
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
-                                                Subcategoria
+                                                Meso região
                                             </f:facet>
-                                            #{product.subcategorie.name}
+                                            #{cities.meso_region}
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
-                                                Preço
+                                                Macro região
                                             </f:facet>
-                                            #{product.priceString}
+                                            #{cities.micro_region}
                                         </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                Coordenadas (Lat x Lon)
+                                            </f:facet>
+                                            #{cities.lat} x #{cities.lon}
+                                        </h:column>                                        
                                     </h:dataTable> 
                                 </div>
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        $('.table_res').DataTable(
+                                                {
+                                                    "language": {
+                                                        "url": "#{facesContext.externalContext.requestContextPath}/resources/js/datatables/pt_br.json"
+                                                    },
+                                                    "order": [[2, "asc"]]
+                                                }
+                                        );
+                                    });
+                                </script>
                             </h:panelGroup>
                         </div>
                     </div>

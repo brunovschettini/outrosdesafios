@@ -1,7 +1,7 @@
 package br.com.xptosystems.beans;
 
 import br.com.xptosystems.address.Cities;
-import br.com.xptosystems.security.ws.ImportCitiesWS;
+import br.com.xptosystems.security.ws.ImportCitiesRequest;
 //import br.com.xptosystems.security.ws.ImportCitiesWS;
 import br.com.xptosystems.utils.FileUpload;
 import br.com.xptosystems.utils.Messages;
@@ -36,7 +36,7 @@ public class ImportCitiesMB implements Serializable {
     }
 
     public synchronized void process() throws NoSuchAlgorithmException {
-        new ImportCitiesWS().auth(listCsvCities);
+        new ImportCitiesRequest().importCities(listCsvCities);
     }
 
     public Part getFileUpload() {
@@ -48,11 +48,10 @@ public class ImportCitiesMB implements Serializable {
     }
 
     public void upload() throws IOException {
-        if (!fileUpload.getContentType().equals("text/csv")) {
+        if (!fileUpload.getContentType().equals("text/csv") && !fileUpload.getContentType().equals("application/vnd.ms-excel")) {
             Messages.warn("Validação", "Arquivo inválido. Deve ser enviado o arquivo do tipo CSV!");
             return;
         }
-
         InputStream input = null;
         OutputStream output = null;
 
@@ -121,7 +120,6 @@ public class ImportCitiesMB implements Serializable {
         System.out.println("file type: " + fileUpload.getContentType());
         System.out.println("file info: " + fileUpload.getHeader("Content-Disposition"));
         fileUpload = null;
-        // FileUpload.upload(fileUpload);
     }
 
     public Boolean getExists() {
