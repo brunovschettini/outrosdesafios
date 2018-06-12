@@ -11,25 +11,52 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 public class CitiesRequest {
 
-    public List<Cities> find(String tcase, String by, String query) {
+    public List<Cities> find(String tcase, String by, String query, String uf) {
+
         new Defaults().loadJson();
         String urlString = Defaults.WEBSERVICE + "cities/";
-        if (tcase.equals("capitals")) {
-            urlString += "capitals";
-        } else if (tcase.equals("find_by_ibge_id")) {
-            urlString += "find/ibge_id/" + query;
-        } else if (tcase.equals("find_column_query")) {
-            urlString += "find/" + by + "/" + query;
+        switch (tcase) {
+            case "capitals":
+                urlString += "capitals";
+                break;
+            case "find_by_ibge_id":
+                urlString += "find/ibge_id/" + query;
+                break;
+            case "find_by_uf":
+                urlString += "find/uf/" + uf;
+                break;
+            case "find_column_query":
+                urlString += "find/" + by + "/" + query;
+                break;
+            case "min_max_cities_by_state":
+                urlString += "min_max_cities_by_state";
+                break;
+            case "total":
+                urlString += "total";
+                break;
+            case "total_columns":
+                urlString += "total/" + by;
+                break;
+            case "count_by_state":
+                urlString += "count_by_state/" + uf;
+                break;
+            default:
+                break;
         }
 
-        String result = request(urlString);
+        String result = get(urlString);
         if (result != null && !result.isEmpty()) {
             Gson gson = new Gson();
             NotifyResponse notifyResponse = null;
@@ -44,15 +71,45 @@ public class CitiesRequest {
 
             }
 
-            List<Cities> list = gson.fromJson(result, new TypeToken<List<Cities>>() {
-            }.getType());
+            if (others(tcase, result)) {
+                return new ArrayList();
+            }
+
+            List<Cities> list = new ArrayList();
+            try {
+                list = gson.fromJson(result, new TypeToken<List<Cities>>() {
+                }.getType());
+
+            } catch (Exception e) {
+
+            }
+
             return list;
         }
 
         return new ArrayList();
     }
 
-    protected String request(String url) {
+    public Boolean others(String tcase, String result) {
+
+        try {
+            switch (tcase) {
+                case "min_max_cities_by_state":
+                case "total":
+                case "total_columns":
+                case "count_by_state":
+                    Messages.info("Resposta do servidor: ", result);
+                    return true;
+                default:
+                    return false;
+            }
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
+
+    protected String get(String url) {
         try {
             HttpGet httpGet;
             HttpEntity entity;
@@ -72,6 +129,118 @@ public class CitiesRequest {
         } catch (IOException e) {
         }
         return "";
+    }
+
+    public Cities store(Cities c) {
+        String urlString = Defaults.WEBSERVICE + "cities/store";
+        try {
+            String result = "";
+            HttpEntity entity;
+
+            List<NameValuePair> params = new ArrayList();
+            String cities = new Gson().toJson(c);
+            params.add(new BasicNameValuePair("cities", cities));
+            // params.add(new BasicNameValuePair("name", ""));
+            Gson gson = new Gson();
+            try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+                HttpPost httpPost = new HttpPost(urlString);
+                httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+                HttpResponse response = httpClient.execute(httpPost);
+                if (response.getStatusLine().getStatusCode() != 200) {
+//                    throw new RuntimeException("Failed : HTTP error code : "
+//                            + response.getStatusLine().getStatusCode());
+                }
+
+                entity = response.getEntity();
+                result = EntityUtils.toString(entity);
+
+                httpPost.abort();
+            }
+
+            if (result != null && !result.isEmpty()) {
+                try {
+                    NotifyResponse notifyResponse = gson.fromJson(result, NotifyResponse.class);
+                    if (notifyResponse != null) {
+                        Messages.warn("Validação", notifyResponse.getObject().toString(), Boolean.TRUE);
+                        return null;
+                    }
+                } catch (Exception e) {
+
+                }
+                c = gson.fromJson(result, Cities.class);
+                if (c == null) {
+                    Messages.warn("Validação", "Erro ao inserir registro", Boolean.TRUE);
+                    return c;
+                }
+                Messages.info("Sucesso", "Registro inserido", Boolean.TRUE);
+                return c;
+            }
+
+        } catch (MalformedURLException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+        return null;
+    }
+
+    public Cities delete(Cities c) {
+        String urlString = Defaults.WEBSERVICE + "cities/delete";
+        try {
+            String result = "";
+            HttpEntity entity;
+
+            List<NameValuePair> params = new ArrayList();
+            String cities = new Gson().toJson(c);
+            params.add(new BasicNameValuePair("ibge_id", c.getIbge_id_string()));
+            // params.add(new BasicNameValuePair("name", ""));
+            Gson gson = new Gson();
+            try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+                HttpDelete httpDelete = new HttpDelete(urlString);
+                // httpDelete.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+                HttpResponse response = httpClient.execute(httpDelete);
+                if (response.getStatusLine().getStatusCode() != 200) {
+//                    throw new RuntimeException("Failed : HTTP error code : "
+//                            + response.getStatusLine().getStatusCode());
+                }
+                entity = response.getEntity();
+                result = EntityUtils.toString(entity);
+                httpDelete.abort();
+            }
+
+            if (result != null && !result.isEmpty()) {
+                try {
+                    NotifyResponse notifyResponse = gson.fromJson(result, NotifyResponse.class);
+                    if (notifyResponse != null) {
+                        Messages.warn("Validação", notifyResponse.getObject().toString(), Boolean.TRUE);
+                        return null;
+                    }
+                } catch (Exception e) {
+
+                }
+                c = gson.fromJson(result, Cities.class);
+                if (c == null) {
+                    Messages.warn("Validação", "Erro ao inserir registro", Boolean.TRUE);
+                    return c;
+                }
+                Messages.info("Sucesso", "Registro inserido", Boolean.TRUE);
+                return c;
+            }
+
+        } catch (MalformedURLException e) {
+
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+        return null;
     }
 
 }

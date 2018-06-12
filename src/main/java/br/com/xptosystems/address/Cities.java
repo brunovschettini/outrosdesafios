@@ -1,7 +1,6 @@
 package br.com.xptosystems.address;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +11,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Digits;
 
 @Entity
 @Table(name = "cities",
@@ -94,6 +92,21 @@ public class Cities implements Serializable {
         this.ibge_id = ibge_id;
     }
 
+    public String getIbge_id_string() {
+        try {
+            return Long.toString(ibge_id);
+        } catch (Exception e) {
+            return "0";
+        }
+    }
+
+    public void setIbge_id_string(String Ibge_id_string) {
+        try {
+            ibge_id = Long.parseLong(Ibge_id_string);
+        } catch (NumberFormatException e) {
+        }
+    }
+
     public String getUf() {
         return uf;
     }
@@ -126,12 +139,42 @@ public class Cities implements Serializable {
         this.lon = lon;
     }
 
+    public String getLon_string() {
+        try {
+            return Double.toString(lon);
+        } catch (Exception e) {
+            return "0";
+        }
+    }
+
+    public void setLon_string(String lon_string) {
+        try {
+            lon = Double.parseDouble(lon_string);
+        } catch (NumberFormatException e) {
+        }
+    }
+
     public Double getLat() {
         return lat;
     }
 
     public void setLat(Double lat) {
         this.lat = lat;
+    }
+
+    public String getLat_string() {
+        try {
+            return Double.toString(lat);
+        } catch (Exception e) {
+            return "0";
+        }
+    }
+
+    public void setLat_string(String lat_string) {
+        try {
+            lat = Double.parseDouble(lat_string);
+        } catch (NumberFormatException e) {
+        }
     }
 
     public String getNo_accents() {

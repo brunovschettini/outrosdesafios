@@ -17,6 +17,27 @@ public class CitiesDao extends DB {
         }
     }
 
+    public Cities exists(Cities c) {
+        try {
+            Query query = getEntityManager().createQuery("SELECT C FROM Cities AS C WHERE UPPER(C.name) = :name AND UPPER(C.uf) = :uf ORDER BY C.name");
+            query.setParameter("name", c.getName());
+            query.setParameter("uf", c.getUf());
+            return (Cities) query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Cities findByIBGE(Long ibge_id) {
+        try {
+            Query query = getEntityManager().createQuery("SELECT C FROM Cities AS C WHERE C.ibge_id = :ibge_id");
+            query.setParameter("ibge_id", ibge_id);
+            return (Cities) query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public List min_max_cities_by_state() {
         try {
             String queryString = ""
@@ -67,7 +88,7 @@ public class CitiesDao extends DB {
 
     public Cities find_by_ibge_id(String code) {
         try {
-            Query query = getEntityManager().createQuery("SELECT C FROM Cities C WHERE C.id = :code");
+            Query query = getEntityManager().createQuery("SELECT C FROM Cities C WHERE C.ibge_id = :code");
             query.setParameter("code", Long.parseLong(code));
             return (Cities) query.getSingleResult();
         } catch (Exception e) {

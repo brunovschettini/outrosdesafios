@@ -22,10 +22,12 @@ public class CitiesMB implements Serializable {
     private String uf;
 
     public CitiesMB() {
+        filter = "capitals";
         listCities = new ArrayList();
         city = new Cities();
         amount = 0;
         uf = "sp";
+        load();
     }
 
     public void save() {
@@ -37,26 +39,36 @@ public class CitiesMB implements Serializable {
             Messages.warn("Validação", "Informar o UF!");
             return;
         }
+        city = new CitiesRequest().store(city);
+        if (city == null) {
+            city = new Cities();
+        }
+    }
+    
+    public void delete(Cities c) {
+        city = new CitiesRequest().store(city);
+        if (city == null) {
+            city = new Cities();
+        }
     }
 
     public void load() {
 
         listCities = new ArrayList();
+        listCities = new CitiesRequest().find(filter, by, query, uf);
 
-        switch (filter) {
-            case "capitals":
-                listCities = new CitiesRequest().find(filter, by, query);
-                break;
-            case "find_by_ibge_id":
-                listCities = new CitiesRequest().find(filter, by, query);
-                break;
-            case "find_column_query":
-                listCities = new CitiesRequest().find(filter, by, query);
-                break;
-            default:
-                break;
-        }
-
+//        switch (filter) {
+//            case "capitals":
+//                break;
+//            case "find_by_ibge_id":
+//                listCities = new CitiesRequest().find(filter, by, query, uf);
+//                break;
+//            case "find_column_query":
+//                listCities = new CitiesRequest().find(filter, by, query, uf);
+//                break;
+//            default:
+//                break;
+//        }
     }
 
     public List<Cities> getListCities() {

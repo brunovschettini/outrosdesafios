@@ -189,6 +189,58 @@ public class CitiesWS {
         return Response.status(200).entity(gson.toJson(notifyResponse)).build();
     }
 
+    @POST
+    @Path("/store")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response store(@FormParam("cities") String citiesJson) {
+        Gson gson = new Gson();
+        NotifyResponse notifyResponse = new NotifyResponse();
+        Cities c = new Gson().fromJson(citiesJson, Cities.class);
+
+        if (c.getIbge_id() == null || c.getIbge_id().equals(new Long(0))) {
+            notifyResponse.setObject("Informar o Id do Ibge!");
+            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
+        }
+        if (c.getName() == null || c.getName().isEmpty()) {
+            notifyResponse.setObject("Informar o nome da ciade!");
+            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
+        }
+        if (c.getUf() == null || c.getUf().isEmpty()) {
+            notifyResponse.setObject("Informar a UF / Estado da ciade!");
+            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
+        }
+        if (c.getLat() == null) {
+            notifyResponse.setObject("Informar as cordenadas de latitude!");
+            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
+        }
+        if (c.getLon() == null) {
+            notifyResponse.setObject("Informar as cordenadas de longitude!");
+            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
+        }
+        if (c.getCapital() == null) {
+            notifyResponse.setObject("Informar se a cidade é uma capital!");
+            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
+        }
+        String result = "Cities cities: " + c;
+        CitiesDao citiesDao = new CitiesDao();
+        if (citiesDao.exists(c) != null) {
+            notifyResponse.setObject("Cidade para esse UF já cadastrada!");
+            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
+        }
+        if (citiesDao.findByIBGE(c.getIbge_id()) != null) {
+            notifyResponse.setObject("Cidade já cadastrada com esse código do IBGE!");
+            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
+        }
+        Dao dao = new Dao();
+        if (!dao.save(c, true)) {
+            notifyResponse.setObject("Erro ao inserir registro!");
+            return Response.status(200).entity(gson.toJson(notifyResponse)).build();
+        }
+        return Response.status(200).entity(gson.toJson(c)).build();
+
+    }
+
     /**
      * 8 Permitir deletar uma cidade
      *
@@ -205,10 +257,15 @@ public class CitiesWS {
             notifyResponse.setObject("Empty / null ibge id");
             return Response.status(200).entity(gson.toJson(notifyResponse)).build();
         }
-        notifyResponse.setObject("Success");
-        JSONObject jSONObject = new JSONObject();
-        jSONObject.put("result", "Success");
-        return Response.status(200).entity(jSONObject.toString()).build();
+        Cities c = new CitiesDao().findByIBGE(Long.parseLong(ibge_id));
+        if (c != null) {
+            Dao dao = new Dao();
+            if (!dao.delete(c, true)) {
+                notifyResponse.setObject("Erro ao excluir registro!");
+                return Response.status(200).entity(gson.toJson(notifyResponse)).build();
+            }
+        }
+        return Response.status(200).entity(gson.toJson(c)).build();
     }
 
     /**
