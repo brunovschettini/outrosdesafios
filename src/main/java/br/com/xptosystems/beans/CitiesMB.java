@@ -44,12 +44,15 @@ public class CitiesMB implements Serializable {
             city = new Cities();
         }
     }
-    
+
     public void delete(Cities c) {
-        city = new CitiesRequest().store(city);
+        city = new CitiesRequest().delete(c);
         if (city == null) {
             city = new Cities();
+        } else {
+
         }
+        listCities.remove(c);
     }
 
     public void load() {

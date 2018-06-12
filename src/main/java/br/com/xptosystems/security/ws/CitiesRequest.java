@@ -98,7 +98,7 @@ public class CitiesRequest {
                 case "total":
                 case "total_columns":
                 case "count_by_state":
-                    Messages.info("Resposta do servidor: ", result);
+                    Messages.info("Resposta do servidor: ", result, true);
                     return true;
                 default:
                     return false;
@@ -194,14 +194,12 @@ public class CitiesRequest {
             String result = "";
             HttpEntity entity;
 
-            List<NameValuePair> params = new ArrayList();
             String cities = new Gson().toJson(c);
-            params.add(new BasicNameValuePair("ibge_id", c.getIbge_id_string()));
             // params.add(new BasicNameValuePair("name", ""));
             Gson gson = new Gson();
             try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
                 HttpDelete httpDelete = new HttpDelete(urlString);
-                // httpDelete.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+                httpDelete.setHeader("ibge_id", c.getIbge_id_string());
                 HttpResponse response = httpClient.execute(httpDelete);
                 if (response.getStatusLine().getStatusCode() != 200) {
 //                    throw new RuntimeException("Failed : HTTP error code : "

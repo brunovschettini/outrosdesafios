@@ -124,7 +124,7 @@
                             </div> 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <h:link value="Cidade" outcome="city"  styleClass="btn btn-primary btn-lg" >
+                                    <h:link value="Cadastrar Cidade" outcome="city"  styleClass="btn btn-primary btn-lg" >
                                     </h:link>                                    
                                 </div>
                             </div>
@@ -143,8 +143,9 @@
                                                 <f:facet name="header">
                                                     IBGE ID 
                                                 </f:facet>
-                                                <h:outputLink value="city.xhtml?id=#{cities.id}" styleClass="btn btn-default" style="width: 60px">
+                                                <h:outputLink styleClass="btn btn-default" style="width: 60px">
                                                     ##{cities.ibge_id}
+                                                    <f:ajax event="click" render="@this i_result_list" execute="@form" listener="#{citiesMB.delete(cities)}" onevent="statusbar"/>
                                                 </h:outputLink>
                                             </h:column>                                        
                                             <h:column>

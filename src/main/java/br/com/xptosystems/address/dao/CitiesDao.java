@@ -157,17 +157,15 @@ public class CitiesDao extends DB {
         try {
             String queryString = ""
                     + "SELECT count(*) \n"
-                    + "FROM cities C\n";
+                    + "FROM cities \n";
             Query query = getEntityManager().createNativeQuery(queryString);
             List result = query.getResultList();
-            List<Object[]> rows = result;
-            for (Object[] row : rows) {
-                return Integer.parseInt(row[0].toString());
-            }
+            Object o = result.get(0);
+            String str = o + "";
+            return Integer.parseInt(str);
         } catch (Exception e) {
             return 0;
         }
-        return 0;
     }
 
     public Integer total(String column) {

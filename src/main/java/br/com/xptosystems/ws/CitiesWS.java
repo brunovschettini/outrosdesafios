@@ -14,10 +14,11 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.json.JSONArray;
@@ -25,6 +26,9 @@ import org.json.JSONObject;
 
 @Path("/cities")
 public class CitiesWS {
+
+    @Context
+    HttpHeaders headers;
 
     @POST
     @Path("/import")
@@ -244,15 +248,15 @@ public class CitiesWS {
     /**
      * 8 Permitir deletar uma cidade
      *
-     * @param ibge_id
      * @return
      */
     @DELETE
-    @Path("/delete/{ibge_id}")
+    @Path("/delete")
     @Produces({MediaType.APPLICATION_JSON})
-    public synchronized Response delete(final @PathParam("ibge_id") String ibge_id) {
+    public synchronized Response delete() {
         NotifyResponse notifyResponse = new NotifyResponse();
         Gson gson = new Gson();
+        String ibge_id = headers.getRequestHeader("ibge_id").get(0);
         if (ibge_id == null || ibge_id.isEmpty()) {
             notifyResponse.setObject("Empty / null ibge id");
             return Response.status(200).entity(gson.toJson(notifyResponse)).build();
