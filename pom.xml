@@ -11,6 +11,7 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      
     </properties>
 
     <dependencies>
@@ -141,15 +142,23 @@
        
         <dependency>
             <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-json</artifactId>
-            <version>1.8</version>
-        </dependency>
-		
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
             <version>1.8</version>
         </dependency> 
+        
+     <dependency> 
+    <groupId>javax.ws.rs</groupId> 
+    <artifactId>jsr311-api</artifactId> 
+    <version>1.1.1</version> 
+</dependency>
+         
+    
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-json</artifactId>
+            <version>1.8</version>
+        </dependency>
+         
         
                   
     </dependencies>
