@@ -4,6 +4,7 @@ import br.com.xptosystems.dao.Dao;
 import br.com.xptosystems.security.UserToken;
 import br.com.xptosystems.security.Users;
 import br.com.xptosystems.security.ws.UsersWS;
+//import br.com.xptosystems.security.ws.UsersWS;
 //import br.com.xptosystems.ws.UsersWS;
 import br.com.xptosystems.securitys.dao.UsersDao;
 import br.com.xptosystems.utils.Defaults;
@@ -30,8 +31,8 @@ public class AccessControlMB implements Serializable {
 
     private Users user;
     private String urlDestino;
-    private String login;
-    private String password;
+    private String login = "admin@xptosystems.com.br";
+    private String password = "xptosystems";
     private boolean rememberMe;
     private String CONTEXT = "XptoSystems/";
 
@@ -39,8 +40,8 @@ public class AccessControlMB implements Serializable {
         new Defaults().loadJson();
         user = new Users();
         urlDestino = "";
-        login = "";
-        password = "";
+        login = "admin@xptosystems.com.br";
+        password = "xptosystems";
     }
 
     public synchronized String authUsers() throws NoSuchAlgorithmException, IOException {
@@ -55,14 +56,16 @@ public class AccessControlMB implements Serializable {
             Messages.info("Validação", "DIGITE UMA SENHA - xptosystems", true);
             return null;
         }
+        String pass = password;
         UsersWS usersWS = new UsersWS();
         UserToken ut = new UserToken();
         MessageDigest m = MessageDigest.getInstance("MD5");
-        m.update(password.getBytes(), 0, password.length());
-        password = new BigInteger(1, m.digest()).toString(16);
-        ut = usersWS.auth(login, password);
+        m.update(pass.getBytes(), 0, pass.length());
+        pass = new BigInteger(1, m.digest()).toString(16);
+        ut = usersWS.auth(login, pass);
+
         if (ut == null) {
-            password = "";
+            password = "xptosystems";
             user = new Users();
             Messages.warn("Validação", "USUÁRIO / SENHA INVÁLIDOS!", true);
             return null;
@@ -83,8 +86,8 @@ public class AccessControlMB implements Serializable {
         Sessions.put("userName", ut.getUsers().getName());
         Sessions.put("sessionClient", "XptoSystems");
         user = ut.getUsers();
-        login = "";
-        password = "";
+        login = "admin@xptosystems.com.br";
+        password = "xptosystems";
         return "dashboard.xhtml?faces-redirect=true";
     }
 

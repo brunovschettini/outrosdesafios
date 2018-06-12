@@ -30,11 +30,11 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <label>Usuário</label>
-                                    <h:inputText value="#{accessControlMB.login}" styleClass="form-control">
+                                    <h:inputText value="#{accessControlMB.login}" styleClass="form-control" readonly="true">
                                         <f:passThroughAttribute name="type" value="email" />
                                     </h:inputText>
                                     <label>Senha</label>
-                                    <h:inputSecret value="#{accessControlMB.password}" redisplay="true" styleClass="form-control"/>                                
+                                    <h:inputSecret value="#{accessControlMB.password}" redisplay="true" styleClass="form-control" readonly="true"/>                                
                                 </div>                                
                             </div>
                             <div class="panel-footer">

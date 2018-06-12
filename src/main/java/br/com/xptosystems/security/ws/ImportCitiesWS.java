@@ -5,33 +5,42 @@ import br.com.xptosystems.security.UserToken;
 import br.com.xptosystems.utils.Defaults;
 import br.com.xptosystems.utils.Messages;
 import com.google.gson.Gson;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 import java.util.List;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 public class ImportCitiesWS {
 
     public UserToken auth(List<Cities> list) {
-        Client client = Client.create();
+
+        new Defaults().loadJson();
+        new Defaults().loadJson();
+        Client client = ClientBuilder.newClient();
+        Form form = new Form();
         String queryString = new Gson().toJson(list);
-        String query = "list_cities=" + queryString;
-        WebResource webResource
-                = client.resource(Defaults.WEBSERVICE)
-                        .path("cities/import");
-        ClientResponse response
-                = webResource.type(MediaType.APPLICATION_JSON)
-                        .post(ClientResponse.class, query);
+        form.param("list_cities", queryString);
+        WebTarget webTarget = client.target(Defaults.WEBSERVICE);
+        WebTarget resourceWebTarget = webTarget.path("auth/in");
+
+        //WebTarget deleteWeb = resourceWebTarget.path("");
+        Invocation.Builder builder = resourceWebTarget.request(MediaType.APPLICATION_JSON_TYPE);
+        Response response = builder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+
         if (response.getStatus() != 200) {
             throw new RuntimeException("Failed : HTTP error code : "
                     + response.getStatus());
         }
         Gson gson = new Gson();
-        String result = response.getEntity(String.class);
+        Object result = response.getEntity();
         NotifyResponse notifyResponse = null;
         try {
-            notifyResponse = gson.fromJson(result, NotifyResponse.class);
+            notifyResponse = gson.fromJson(result + "", NotifyResponse.class);
             if (notifyResponse != null) {
                 Messages.warn("Validação", notifyResponse.getObject().toString(), Boolean.TRUE);
                 return null;

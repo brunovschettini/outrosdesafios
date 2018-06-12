@@ -2,6 +2,7 @@ package br.com.xptosystems.beans;
 
 import br.com.xptosystems.address.Cities;
 import br.com.xptosystems.security.ws.ImportCitiesWS;
+//import br.com.xptosystems.security.ws.ImportCitiesWS;
 import br.com.xptosystems.utils.FileUpload;
 import br.com.xptosystems.utils.Messages;
 import java.io.BufferedReader;
@@ -82,22 +83,22 @@ public class ImportCitiesMB implements Serializable {
 
                 try {
                     // use comma as separator
-                String[] cities = line.split(cvsSplitBy);
-                
-                Cities c = new Cities();
-                c.setIbgeId(Long.parseLong(cities[0]));
-                c.setUf(cities[1]);
-                c.setName(cities[2]);
-                c.setCapital(Boolean.parseBoolean(cities[3]));
-                c.setLon(Double.parseDouble(cities[4]));
-                c.setLat(Double.parseDouble(cities[5]));
-                c.setNoAccents(cities[6]);
-                c.setAlternativeNames(cities[7]);
-                c.setMicroRegion(cities[8]);
-                c.setMesoRegion(cities[9]);
-                listCsvCities.add(c);
+                    String[] cities = line.split(cvsSplitBy);
+
+                    Cities c = new Cities();
+                    c.setIbge_id(Long.parseLong(cities[0]));
+                    c.setUf(cities[1]);
+                    c.setName(cities[2]);
+                    c.setCapital(Boolean.parseBoolean(cities[3]));
+                    c.setLon(Double.parseDouble(cities[4]));
+                    c.setLat(Double.parseDouble(cities[5]));
+                    c.setNo_accents(cities[6]);
+                    c.setAlternative_names(cities[7]);
+                    c.setMicro_region(cities[8]);
+                    c.setMeso_region(cities[9]);
+                    listCsvCities.add(c);
                 } catch (Exception e) {
-                    
+
                 }
 
             }

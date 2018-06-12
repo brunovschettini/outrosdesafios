@@ -25,7 +25,7 @@ public class Cities implements Serializable {
     @Column(name = "id")
     private Long id;
     @Column(name = "ibge_id", unique = true, nullable = false)
-    private Long ibgeId;
+    private Long ibge_id;
     @Column(name = "uf", length = 2, nullable = false)
     private String uf;
     @Column(name = "name", length = 150, nullable = false)
@@ -37,45 +37,45 @@ public class Cities implements Serializable {
     @Column(name = "lat", nullable = true, precision = 10, scale = 12)
     private Double lat;
     @Column(name = "no_accents", length = 150, nullable = false)
-    private String noAccents;
+    private String no_accents;
     @Column(name = "alternative_accents", length = 150, nullable = false)
-    private String alternativeNames;
+    private String alternative_names;
     @Column(name = "micro_region", length = 100, nullable = false)
-    private String microRegion;
+    private String micro_region;
     @Column(name = "meso_region", length = 100, nullable = false)
-    private String mesoRegion;
+    private String meso_region;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "register_date", nullable = false)
-    private Date registerDate;
+    private Date register_date;
 
     public Cities() {
         this.id = null;
-        this.ibgeId = null;
+        this.ibge_id = null;
         this.uf = "";
         this.name = "";
         this.capital = false;
         this.lon = null;
         this.lat = null;
-        this.noAccents = "";
-        this.alternativeNames = "";
-        this.microRegion = "";
-        this.mesoRegion = "";
-        this.registerDate = new Date();
+        this.no_accents = "";
+        this.alternative_names = "";
+        this.micro_region = "";
+        this.meso_region = "";
+        this.register_date = new Date();
     }
 
-    public Cities(Long id, Long ibgeId, String uf, String name, Boolean capital, Double lon, Double lat, String noAccents, String alternativeNames, String microRegion, String mesoRegion, Date registerDate) {
+    public Cities(Long id, Long ibge_id, String uf, String name, Boolean capital, Double lon, Double lat, String no_accents, String alternative_names, String micro_region, String meso_region, Date register_date) {
         this.id = id;
-        this.ibgeId = ibgeId;
+        this.ibge_id = ibge_id;
         this.uf = uf;
         this.name = name;
         this.capital = capital;
         this.lon = lon;
         this.lat = lat;
-        this.noAccents = noAccents;
-        this.alternativeNames = alternativeNames;
-        this.microRegion = microRegion;
-        this.mesoRegion = mesoRegion;
-        this.registerDate = registerDate;
+        this.no_accents = no_accents;
+        this.alternative_names = alternative_names;
+        this.micro_region = micro_region;
+        this.meso_region = meso_region;
+        this.register_date = register_date;
     }
 
     public Long getId() {
@@ -86,12 +86,12 @@ public class Cities implements Serializable {
         this.id = id;
     }
 
-    public Long getIbgeId() {
-        return ibgeId;
+    public Long getIbge_id() {
+        return ibge_id;
     }
 
-    public void setIbgeId(Long ibgeId) {
-        this.ibgeId = ibgeId;
+    public void setIbge_id(Long ibge_id) {
+        this.ibge_id = ibge_id;
     }
 
     public String getUf() {
@@ -134,44 +134,44 @@ public class Cities implements Serializable {
         this.lat = lat;
     }
 
-    public String getNoAccents() {
-        return noAccents;
+    public String getNo_accents() {
+        return no_accents;
     }
 
-    public void setNoAccents(String noAccents) {
-        this.noAccents = noAccents;
+    public void setNo_accents(String no_accents) {
+        this.no_accents = no_accents;
     }
 
-    public String getAlternativeNames() {
-        return alternativeNames;
+    public String getAlternative_names() {
+        return alternative_names;
     }
 
-    public void setAlternativeNames(String alternativeNames) {
-        this.alternativeNames = alternativeNames;
+    public void setAlternative_names(String alternative_names) {
+        this.alternative_names = alternative_names;
     }
 
-    public String getMicroRegion() {
-        return microRegion;
+    public String getMicro_region() {
+        return micro_region;
     }
 
-    public void setMicroRegion(String microRegion) {
-        this.microRegion = microRegion;
+    public void setMicro_region(String micro_region) {
+        this.micro_region = micro_region;
     }
 
-    public String getMesoRegion() {
-        return mesoRegion;
+    public String getMeso_region() {
+        return meso_region;
     }
 
-    public void setMesoRegion(String mesoRegion) {
-        this.mesoRegion = mesoRegion;
+    public void setMeso_region(String meso_region) {
+        this.meso_region = meso_region;
     }
 
-    public Date getRegisterDate() {
-        return registerDate;
+    public Date getRegister_date() {
+        return register_date;
     }
 
-    public void setRegisterDate(Date registerDate) {
-        this.registerDate = registerDate;
+    public void setRegister_date(Date register_date) {
+        this.register_date = register_date;
     }
 
 }
