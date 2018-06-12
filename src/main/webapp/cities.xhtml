@@ -23,6 +23,10 @@
                                 <div class="panel-body">
                                     <div class="form-group">
                                         <h:panelGroup  id="i_filters">
+                                            <!-- 
+                                            <ui:include src="layout/info.xhtml" />
+                                            <ui:include src="layout/warn.xhtml" />
+                                            -->
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <label>Consultas</label>
@@ -42,11 +46,10 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-3">
-                                                    <h:column rendered="#{citiesMB.filter eq 'find_column_query' or citiesMB.filter eq 'total_columns' or (citiesMB.by eq 'uf' and citiesMB.filter eq 'find_column_query') or (citiesMB.by eq 'uf')}">
+                                                    <h:column rendered="#{citiesMB.filter eq 'find_column_query' or citiesMB.filter eq 'total_columns' or (citiesMB.filter eq 'find_column_query')}">
                                                         <label>Fitrar por</label>
                                                         <h:selectOneMenu value="#{citiesMB.by}" styleClass="form-control">
-                                                            <f:ajax event="change" render="@this i_result_list" execute="@form" listener="#{citiesMB.load}" onevent="statusbar"/>
-                                                            <f:selectItem itemLabel="Filtro" itemValue=""  />
+                                                            <f:ajax event="change" render="@this i_filters i_result_list" execute="@form" listener="#{citiesMB.load}" onevent="statusbar"/>
                                                             <f:selectItem itemLabel="Nome" itemValue="name"  />
                                                             <f:selectItem itemLabel="IBGE ID" itemValue="ibge_id"  />
                                                             <f:selectItem itemLabel="UF" itemValue="uf"  />
@@ -114,7 +117,7 @@
                                                 </div>
                                                 <div class="col-lg-2">
                                                     <h:commandLink value="PESQUISAR" style="width: 150px" styleClass="btn btn-default form-control" id="btnfindcities">
-                                                        <f:ajax event="click" render="@this i_result_list" execute="@form" listener="#{citiesMB.load}" onevent="statusbar"/>
+                                                        <f:ajax event="click" render="@this i_result_list" execute="@form" listener="#{citiesMB.load(false)}" onevent="statusbar"/>
                                                     </h:commandLink>
                                                 </div>
                                             </div>
@@ -138,15 +141,21 @@
                             <h:panelGroup layout="block" id="i_result_list">
                                 <h:column rendered="#{citiesMB.filter eq 'capitals' or citiesMB.filter eq 'find_by_ibge_id' or citiesMB.filter eq 'find_by_uf' or  citiesMB.filter eq 'find_column_query'}">
                                     <div class="table-responsive table-scroll-max">
-                                        <h:dataTable var="cities" value="#{citiesMB.listCities}" styleClass="table table-striped table-hover table-scroll-max table_res">
+                                        <h:dataTable var="cities" value="#{citiesMB.listCities}" styleClass="table table-striped table-hover table-scroll-max table_res" id="i_table">
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    Remover
+                                                </f:facet>
+                                                <h:outputLink styleClass="btn btn-default" style="width: 100px">
+                                                    X
+                                                    <f:ajax event="click" render="i_table" execute="@form" listener="#{citiesMB.delete(cities)}" onevent="statusbar"/>
+                                                </h:outputLink>
+                                            </h:column>                                        
                                             <h:column>
                                                 <f:facet name="header">
                                                     IBGE ID 
                                                 </f:facet>
-                                                <h:outputLink styleClass="btn btn-default" style="width: 60px">
-                                                    ##{cities.ibge_id}
-                                                    <f:ajax event="click" render="@this i_result_list" execute="@form" listener="#{citiesMB.delete(cities)}" onevent="statusbar"/>
-                                                </h:outputLink>
+                                                ##{cities.ibge_id}                                                
                                             </h:column>                                        
                                             <h:column>
                                                 <f:facet name="header">

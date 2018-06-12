@@ -20,30 +20,27 @@
                     <div id="navbar" class="navbar-collapse collapse"  style="overflow: hidden">
                         <h:form prependId="false">
                             <ul class="nav navbar-nav navbar-right">                   
-                                    <li class="dropdown">
-                                        <h:column >
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CADASTROS<span class="caret"></span></a>
-                                            <ul class="dropdown-menu">
-                                                <li class="dropdown-submenu">
-                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cidades</a>
-                                                    <ul class="dropdown-menu">
-                                                        <li><h:commandLink value="Manutenção" action="#{callPageMB.page('cities')}" /></li>
-                                                        <li><h:commandLink value="Importação" action="#{callPageMB.page('import_cities')}" /></li>
-                                                    </ul>
-                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Relatórios</a>
-                                                    <ul class="dropdown-menu">
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </h:column>
-                                    </li>
+                                <li class="dropdown">
+                                    <h:column >
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CADASTROS<span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li class="dropdown-submenu">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cidades</a>
+                                                <ul class="dropdown-menu">
+                                                    <li><h:commandLink value="Manutenção" action="#{callPageMB.page('cities')}" /></li>
+                                                    <li><h:commandLink value="Importação" action="#{callPageMB.page('import_cities')}" /></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </h:column>
+                                </li>
 
 
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">SEGURANÇA<span class="caret"></span></a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <h:commandLink action="#{callPageMB.page('users')}">
+                                            <h:commandLink action="#{callPageMB.page('users')}" disabled="true">
                                                 <i class="fa fa-user" aria-hidden="true"></i>
                                                 Usuários
                                             </h:commandLink>
@@ -51,6 +48,11 @@
                                     </ul>
                                 </li>
 
+                                <li>
+                                    <h:commandLink action="#{callPageMB.page('wiki')}" >
+                                        AJUDA
+                                    </h:commandLink>
+                                </li>                                
                                 <li><h:commandLink value="SAIR" action="#{accessControlMB.logout}"/></li>                                
                             </ul>
                         </h:form>

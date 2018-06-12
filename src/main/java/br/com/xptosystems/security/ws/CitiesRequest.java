@@ -32,13 +32,25 @@ public class CitiesRequest {
                 urlString += "capitals";
                 break;
             case "find_by_ibge_id":
-                urlString += "find/ibge_id/" + query;
+                if (query.isEmpty()) {
+                    return new ArrayList();
+                }
+                urlString += "ibge_id/" + query;
                 break;
             case "find_by_uf":
-                urlString += "find/uf/" + uf;
+                if (query.isEmpty()) {
+                    return new ArrayList();
+                }
+                urlString += "uf/" + uf;
                 break;
             case "find_column_query":
-                urlString += "find/" + by + "/" + query;
+                if (by.isEmpty()) {
+                    return new ArrayList();
+                }
+                if (query.isEmpty()) {
+                    return new ArrayList();
+                }
+                urlString += "search/" + by + "/" + query;
                 break;
             case "min_max_cities_by_state":
                 urlString += "min_max_cities_by_state";
@@ -47,9 +59,15 @@ public class CitiesRequest {
                 urlString += "total";
                 break;
             case "total_columns":
-                urlString += "total/" + by;
+                if (by.isEmpty()) {
+                    return new ArrayList();
+                }
+                urlString += "total_column/" + by;
                 break;
             case "count_by_state":
+                if (uf.isEmpty()) {
+                    return new ArrayList();
+                }
                 urlString += "count_by_state/" + uf;
                 break;
             default:
@@ -83,7 +101,7 @@ public class CitiesRequest {
             } catch (Exception e) {
 
             }
-
+            Messages.warn("Total de registros", list.size() + "", Boolean.TRUE);
             return list;
         }
 

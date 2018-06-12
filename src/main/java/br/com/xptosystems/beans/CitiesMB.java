@@ -22,6 +22,8 @@ public class CitiesMB implements Serializable {
     private String uf;
 
     public CitiesMB() {
+        query = "";
+        by = "name";
         filter = "capitals";
         listCities = new ArrayList();
         city = new Cities();
@@ -56,6 +58,13 @@ public class CitiesMB implements Serializable {
     }
 
     public void load() {
+        load(true);
+    }
+    
+    public void load(Boolean clean) {
+        if (clean == null || clean) {
+            query = "";
+        }
 
         listCities = new ArrayList();
         listCities = new CitiesRequest().find(filter, by, query, uf);

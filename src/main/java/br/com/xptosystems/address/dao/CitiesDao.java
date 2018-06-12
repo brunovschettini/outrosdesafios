@@ -76,14 +76,12 @@ public class CitiesDao extends DB {
                     + "WHERE UPPER(C.uf) = UPPER('" + uf + "')";
             Query query = getEntityManager().createNativeQuery(queryString);
             List result = query.getResultList();
-            List<Object[]> rows = result;
-            for (Object[] row : rows) {
-                return Integer.parseInt(row[0].toString());
-            }
+            Object o = result.get(0);
+            String str = o + "";
+            return Integer.parseInt(str);
         } catch (Exception e) {
             return 0;
         }
-        return 0;
     }
 
     public Cities find_by_ibge_id(String code) {
@@ -115,8 +113,8 @@ public class CitiesDao extends DB {
         }
         String queryString = "";
         switch (column) {
-            case "ibde_id":
-                queryString = "SELECT C.* FROM cities C WHERE C.ibde_id = " + query + " ORDER BY C.name ASC";
+            case "ibge_id":
+                queryString = "SELECT C.* FROM cities C WHERE C.ibge_id = " + query + " ORDER BY C.name ASC";
                 break;
             case "uf":
                 queryString = "SELECT C.* FROM cities C WHERE C.uf = '" + query + "' ORDER BY C.uf, C.name ASC";
@@ -174,8 +172,8 @@ public class CitiesDao extends DB {
         }
         String queryString = "";
         switch (column) {
-            case "ibde_id":
-                queryString = "SELECT C.* FROM cities C WHERE C.ibde_id != null ORDER BY C.name ASC";
+            case "ibge_id":
+                queryString = "SELECT C.* FROM cities C WHERE C.ibge_id IS NOT NULL ORDER BY C.name ASC";
                 break;
             case "uf":
                 queryString = "SELECT C.* FROM cities C WHERE C.uf <> '' ORDER BY C.uf, C.name ASC";
@@ -184,10 +182,10 @@ public class CitiesDao extends DB {
                 queryString = "SELECT C.* FROM cities C WHERE C.name <> '' ORDER BY C.uf, C.name ASC";
                 break;
             case "lon":
-                queryString = "SELECT C.* FROM cities C WHERE C.lon != null ORDER BY C.name ASC";
+                queryString = "SELECT C.* FROM cities C WHERE C.lon IS NOT NULL null ORDER BY C.name ASC";
                 break;
             case "lat":
-                queryString = "SELECT C.* FROM cities C WHERE C.lat != null ORDER BY C.name ASC";
+                queryString = "SELECT C.* FROM cities C WHERE C.lat IS NOT NULL  ORDER BY C.name ASC";
                 break;
             case "no_accents":
                 queryString = "SELECT C.* FROM cities C WHERE C.no_accents <> '' ORDER BY C.uf, C.no_accents ASC";
@@ -196,7 +194,7 @@ public class CitiesDao extends DB {
                 queryString = "SELECT C.* FROM cities C WHERE C.alternative_names <> '' ORDER BY C.uf, C.alternative_names ASC";
                 break;
             case "micro_region":
-                queryString = "SELECT C.* FROM cities C WHERE C.micro_region <> ''' ORDER BY C.uf, C.micro_region ASC";
+                queryString = "SELECT C.* FROM cities C WHERE C.micro_region <> '' ORDER BY C.uf, C.micro_region ASC";
                 break;
             case "meso_region":
                 queryString = "SELECT C.* FROM cities C WHERE C.meso_region <> '' ORDER BY C.uf, C.meso_region ASC";

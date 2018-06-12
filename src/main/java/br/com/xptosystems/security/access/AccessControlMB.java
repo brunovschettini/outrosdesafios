@@ -141,7 +141,7 @@ public class AccessControlMB implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
         session.invalidate();
-        return "login.xhtml?faces-redirect=true";
+        return "index.xhtml?faces-redirect=true";
     }
 
     public Users getUsers() {

@@ -104,11 +104,15 @@ public class CitiesWS {
      * @return
      */
     @GET
-    @Path("/find/ibge_id/{ibge_id}")
+    @Path("/ibge_id/{ibge_id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public synchronized Response find_by_ibge_id(@PathParam("ibge_id") String ibge_id) {
+    public synchronized Response ibge_id(@PathParam("ibge_id") String ibge_id) {
         Cities cities = new CitiesDao().find_by_ibge_id(ibge_id);
-        return Response.status(200).entity(new Gson().toJson(cities)).build();
+        List<Cities> list = new ArrayList();
+        if(cities != null) {
+            list.add(cities);            
+        }
+        return Response.status(200).entity(new Gson().toJson(list)).build();
     }
 
     /**
@@ -118,9 +122,9 @@ public class CitiesWS {
      * @return
      */
     @GET
-    @Path("/find/uf/{uf}")
+    @Path("/uf/{uf}")
     @Produces({MediaType.APPLICATION_JSON})
-    public synchronized Response find_by_uf(@PathParam("uf") String uf) {
+    public synchronized Response find_uf(@PathParam("uf") String uf) {
         List<Cities> list = new CitiesDao().find_by_uf(uf);
         return Response.status(200).entity(new Gson().toJson(list)).build();
     }
@@ -282,7 +286,7 @@ public class CitiesWS {
      * @return
      */
     @GET
-    @Path("/find/{column}/{query}")
+    @Path("/search/{column}/{query}")
     @Produces({MediaType.APPLICATION_JSON})
     public synchronized Response find(@PathParam("column") String column, @PathParam("query") String query) {
         List<Cities> list = new CitiesDao().find(column, query);
@@ -297,9 +301,9 @@ public class CitiesWS {
      * @return
      */
     @GET
-    @Path("/total/{column}")
+    @Path("/total_column/{column}")
     @Produces({MediaType.APPLICATION_JSON})
-    public synchronized Response total(@PathParam("column") String column) {
+    public synchronized Response total_column(@PathParam("column") String column) {
         Integer total = new CitiesDao().total(column);
         JSONObject jSONObject = new JSONObject();
         jSONObject.put("total", total);
