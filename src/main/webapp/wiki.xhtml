@@ -97,11 +97,32 @@
         <ul>
             <li>
                 <strong><u>7 - Permitir adicionar uma nova Cidade</u></strong><br /><br />
-                Method: POST
-                <br /><br />
+                Method: POST<br /><br />
                 <code style="padding: 5px; background: #eaeaea">
                     http://uri/ws/cities/store
                 </code>
+                <br /><br />
+                Form Param: (String) cities = <br /><br />
+                <div style="background: #001921; color: white; width: 300px; border: 1px dashed white">
+                    <code style="padding: 5px;"><br />
+                        &nbsp;&nbsp;{                    <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"id":null,       <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ibge_id":null,  <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"uf":"UF",       <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"name":"City",   <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"capital":false, <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"lon":0,         <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"lat":0,         <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"no_accents":"", <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"alternative_names":"", <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"micro_region":"",<br />  
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"meso_region":"", <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"register_date":null <br />
+                        &nbsp;&nbsp;} <br />
+                    </code>
+                </div><br />    
+                <p>Para gravar a cidade, deve enviar o objeto Cities no formato json dentro da variável <b><u>cities</u></b>.</p>
+                <br /><br />
             </li>
         </ul>
         <br />
@@ -111,8 +132,12 @@
                 Method: DELETE
                 <br /><br />
                 <code style="padding: 5px; background: #eaeaea">
-                    http://uri/ws/cities/delete/{ibge_id}
+                    http://uri/ws/cities/delete/
                 </code>
+                <br /><br />
+                Header Param: (String) ibge_id = '15478'
+                <br /><br />
+                <p>Para remover a cidade deve se enviar o ibge_id no cabeçalho/header da requisição</p>
             </li>
         </ul>
         <br />
